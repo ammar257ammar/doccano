@@ -42,7 +42,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import ProjectList from '@/components/project/ProjectList.vue'
-import { ProjectDTO, ProjectWriteDTO } from '@/services/application/project.service'
+import { ProjectDTO, ProjectWriteDTO } from '~/services/application/project/projectData'
 import FormDelete from '~/components/project/FormDelete.vue'
 import FormCreate from '~/components/project/FormCreate.vue'
 
@@ -71,15 +71,17 @@ export default Vue.extend({
         name: '',
         description: '',
         projectType: 'DocumentClassification',
-        enableRandomizeDocOrder: false,
-        enableShareAnnotation: false
+        enableRandomOrder: false,
+        enableShareAnnotation: false,
+        singleClassClassification: false
       } as ProjectWriteDTO,
       defaultItem: {
         name: '',
         description: '',
         projectType: 'DocumentClassification',
-        enableRandomizeDocOrder: false,
-        enableShareAnnotation: false
+        enableRandomOrder: false,
+        enableShareAnnotation: false,
+        singleClassClassification: false
       } as ProjectWriteDTO,
       items: [] as ProjectDTO[],
       selected: [] as ProjectDTO[],

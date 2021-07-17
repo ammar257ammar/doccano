@@ -68,6 +68,7 @@ export default {
 
   buildModules: [
     '@nuxt/typescript-build',
+    '@nuxtjs/composition-api/module',
     ['@nuxtjs/google-analytics', {
       id: process.env.GOOGLE_TRACKING_ID
     }]
@@ -130,13 +131,26 @@ export default {
     */
     publicPath: process.env.PUBLIC_PATH || '/_nuxt/',
     extend(config, ctx) {
+      // config.module.rules.push({
+      //   test: /\.(txt|csv|conll|jsonl)$/i,
+      //   loader: 'file-loader',
+      //   options: {
+      //     name: '[path][name].[ext]'
+      //   }
+      // })
       config.module.rules.push({
-        test: /\.(txt|csv|conll|jsonl)$/i,
+        enforce: 'pre',
+        test: /\.(txt|csv|json|jsonl)$/,
+        loader: 'raw-loader',
+        exclude: /(node_modules)/
+      })
+      config.module.rules.push({
+        test: /\.(ogg|mp3|wav|mpe?g)$/i,
         loader: 'file-loader',
         options: {
           name: '[path][name].[ext]'
         }
       })
-    }
+    },
   }
 }

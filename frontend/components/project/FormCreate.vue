@@ -41,11 +41,17 @@
           <template v-slot:selection="props">
             {{ translateTypeName(props.item, $t('overview.projectTypes')) }}
           </template>
-          </v-select>
+        </v-select>
         <v-checkbox
-          :value="enableRandomizeDocOrder"
+          v-if="hasSingleLabelOption"
+          :value="singleClassClassification"
+          label="Allow single label"
+          @change="updateValue('singleClassClassification', $event === true)"
+        />
+        <v-checkbox
+          :value="enableRandomOrder"
           :label="$t('overview.randomizeDocOrder')"
-          @change="updateValue('enableRandomizeDocOrder', $event === true)"
+          @change="updateValue('enableRandomOrder', $event === true)"
         />
         <v-checkbox
           :value="enableShareAnnotation"
@@ -59,7 +65,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import BaseCard from '@/components/molecules/BaseCard.vue'
+import BaseCard from '@/components/utils/BaseCard.vue'
 import { projectNameRules, descriptionRules, projectTypeRules } from '@/rules/index'
 
 export default Vue.extend({
@@ -83,12 +89,17 @@ export default Vue.extend({
       default: '',
       required: true
     },
-    enableRandomizeDocOrder: {
+    enableRandomOrder: {
       type: Boolean,
       default: false,
       required: true
     },
     enableShareAnnotation: {
+      type: Boolean,
+      default: false,
+      required: true
+    },
+    singleClassClassification: {
       type: Boolean,
       default: false,
       required: true
@@ -106,7 +117,19 @@ export default Vue.extend({
 
   computed: {
     projectTypes() {
-      return ['DocumentClassification', 'SequenceLabeling', 'Seq2seq']
+      return [
+        'DocumentClassification',
+        'SequenceLabeling',
+        'Seq2seq',
+        'ImageClassification',
+        'Speech2text',
+      ]
+    },
+    hasSingleLabelOption() {
+      return [
+        'DocumentClassification',
+        'ImageClassification',
+      ].includes(this.projectType)
     }
   },
 

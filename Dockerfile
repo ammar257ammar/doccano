@@ -16,11 +16,11 @@ FROM python:${PYTHON_VERSION}-slim-buster AS backend-builder
 
 RUN apt-get update \
  && apt-get install -y --no-install-recommends \
-    netcat=1.10-41.1 \
-    libpq-dev=11.10-0+deb10u1 \
-    unixodbc-dev=2.3.6-0.1 \
-    g++=4:8.3.0-1 \
-    libssl-dev=1.1.1d-0+deb10u4 \
+    netcat=1.* \
+    libpq-dev=11.* \
+    unixodbc-dev=2.* \
+    g++=4:* \
+    libssl-dev=1.* \
  && apt-get clean
 
 WORKDIR /tmp
@@ -48,9 +48,10 @@ RUN pip install --no-cache-dir -U pip \
  && rm -rf /deps
 
 COPY --chown=doccano:doccano . /doccano
-WORKDIR /doccano/app
-COPY --from=frontend-builder /frontend/dist /doccano/app/client/dist
+WORKDIR /doccano/backend
+COPY --from=frontend-builder /frontend/dist /doccano/backend/client/dist
 RUN python manage.py collectstatic --noinput
+RUN chown -R doccano:doccano .
 
 VOLUME /data
 ENV DATABASE_URL="sqlite:////data/doccano.db"
@@ -59,6 +60,7 @@ ENV DEBUG="True"
 ENV SECRET_KEY="change-me-in-production"
 ENV PORT="8000"
 ENV WORKERS="2"
+ENV CELERY_WORKERS="2"
 ENV GOOGLE_TRACKING_ID=""
 ENV AZURE_APPINSIGHTS_IKEY=""
 

@@ -15,6 +15,7 @@
       <the-side-bar
         :link="getLink"
         :role="getCurrentUserRole"
+        :project="currentProject"
       />
     </v-navigation-drawer>
 
@@ -37,8 +38,8 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import TheSideBar from '~/components/organisms/layout/TheSideBar'
-import TheHeader from '~/components/organisms/layout/TheHeader'
+import TheSideBar from '~/components/layout/TheSideBar'
+import TheHeader from '~/components/layout/TheHeader'
 
 export default {
   middleware: ['check-auth', 'auth', 'check-admin'],
@@ -55,7 +56,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters('projects', ['getLink', 'getCurrentUserRole'])
+    ...mapGetters('projects', ['getLink', 'getCurrentUserRole', 'currentProject'])
   }
 }
 </script>

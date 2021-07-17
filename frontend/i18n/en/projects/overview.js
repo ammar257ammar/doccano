@@ -14,6 +14,8 @@ export default {
   projectTypes: [
     'Text Classification',
     'Sequence Labeling',
-    'Sequence to sequence'
+    'Sequence to sequence',
+    'Image Classification',
+    'Speech to Text',
   ]
 }

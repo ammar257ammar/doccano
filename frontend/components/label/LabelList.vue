@@ -9,7 +9,6 @@
     :no-data-text="$t('vuetify.noDataAvailable')"
     :footer-props="{
       'showFirstLastPage': true,
-      'items-per-page-options': [5, 10, 15, $t('generic.all')],
       'items-per-page-text': $t('vuetify.itemsPerPageText'),
       'page-text': $t('dataset.pageText')
     }"
@@ -27,12 +26,12 @@
         filled
       />
     </template>
-    <template v-slot:[`item.background_color`]="props">
+    <template v-slot:[`item.backgroundColor`]="props">
       <v-chip
-        :color="props.item.background_color"
-        :text-color="$contrastColor(props.item.background_color)"
+        :color="props.item.backgroundColor"
+        :text-color="$contrastColor(props.item.backgroundColor)"
       >
-        {{ props.item.background_color }}
+        {{ props.item.backgroundColor }}
       </v-chip>
     </template>
     <template v-slot:[`item.actions`]="{ item }">
@@ -48,7 +47,7 @@
 
 <script lang="ts">
 import Vue, { PropType } from 'vue'
-import { LabelDTO } from '@/services/application/label.service'
+import { LabelDTO } from '~/services/application/label/labelData'
 
 export default Vue.extend({
   props: {
@@ -79,8 +78,8 @@ export default Vue.extend({
     headers() {
       return [
         { text: this.$t('generic.name'),    value: 'text' },
-        { text: this.$t('labels.shortkey'), value: 'suffix_key' },
-        { text: this.$t('labels.color'),    value: 'background_color' },
+        { text: this.$t('labels.shortkey'), value: 'suffixKey' },
+        { text: this.$t('labels.color'),    value: 'backgroundColor' },
         { text: 'Actions', value: 'actions', sortable: false },
       ]
     }

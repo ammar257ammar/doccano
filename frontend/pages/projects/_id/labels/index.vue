@@ -16,7 +16,7 @@
       </v-btn>
       <v-dialog v-model="dialogCreate">
         <form-create
-          v-model="editedItem"
+          v-bind.sync="editedItem"
           :used-keys="usedKeys"
           :used-names="usedNames"
           @cancel="close"
@@ -50,12 +50,13 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { LabelDTO } from '@/services/application/label.service'
 import ActionMenu from '@/components/label/ActionMenu.vue'
 import FormCreate from '@/components/label/FormCreate.vue'
 import FormDelete from '@/components/label/FormDelete.vue'
 import FormUpload from '@/components/label/FormUpload.vue'
 import LabelList from '@/components/label/LabelList.vue'
+import { LabelDTO } from '~/services/application/label/labelData'
+import { ProjectDTO } from '~/services/application/project/projectData'
 
 export default Vue.extend({
   layout: 'project',
@@ -82,17 +83,17 @@ export default Vue.extend({
       editedIndex: -1,
       editedItem: {
         text: '',
-        prefix_key: null,
-        suffix_key: null,
-        background_color: '#2196F3',
-        text_color: '#ffffff'
+        prefixKey: null,
+        suffixKey: null,
+        backgroundColor: '#2196F3',
+        textColor: '#ffffff'
       } as LabelDTO,
       defaultItem: {
         text: '',
-        prefix_key: null,
-        suffix_key: null,
-        background_color: '#2196F3',
-        text_color: '#ffffff'
+        prefixKey: null,
+        suffixKey: null,
+        backgroundColor: '#2196F3',
+        textColor: '#ffffff'
       } as LabelDTO,
       items: [] as LabelDTO[],
       selected: [] as LabelDTO[],
@@ -114,7 +115,7 @@ export default Vue.extend({
     },
     usedKeys(): string[] {
       const item = this.items[this.editedIndex] // to remove myself
-      return this.items.filter(_ => _ !== item).map(item => item.suffix_key)
+      return this.items.filter(_ => _ !== item).map(item => item.suffixKey)
                        .filter(item => item !==null) as string[]
     }
   },
@@ -183,8 +184,14 @@ export default Vue.extend({
     }
   },
 
-  validate({ params }) {
-    return /^\d+$/.test(params.id)
+  validate({ params, app }) {
+    if (/^\d+$/.test(params.id)) {
+      return app.$services.project.findById(params.id)
+      .then((res:ProjectDTO) => {
+        return res.canDefineLabel
+      })
+    }
+    return false
   }
 })
 </script>

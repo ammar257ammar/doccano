@@ -35,7 +35,13 @@ required = [
     'seqeval>=1.2.2',
     'social-auth-app-django>=4.0.0',
     'whitenoise>=5.2.0',
-    'auto-labeling-pipeline>=0.1.12'
+    'auto-labeling-pipeline>=0.1.12',
+    'celery>=5.0.5',
+    'dj-rest-auth>=2.1.4',
+    'django-celery-results>=2.0.1',
+    'django-drf-filepond>=0.3.0',
+    'sqlalchemy>=1.4.7',
+    'gunicorn>=20.1.0',
 ]
 
 setup(
@@ -51,7 +57,7 @@ setup(
     packages=find_packages(exclude=('*.tests',)),
     entry_points={
         'console_scripts': [
-            'doccano = app.doccano.doccano:main'
+            'doccano = backend.cli:main'
         ]
     },
     install_requires=required,
